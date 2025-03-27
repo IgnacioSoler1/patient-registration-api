@@ -1,5 +1,5 @@
 import smtplib
-from email.message import EmailMessage
+from email.mime.text import MIMEText
 import os
 import asyncio
 from dotenv import load_dotenv
@@ -7,40 +7,34 @@ from dotenv import load_dotenv
 # Cargar variables de entorno
 load_dotenv()
 
-MAILTRAP_USER = os.getenv("MAILTRAP_USER")
-MAILTRAP_PASS = os.getenv("MAILTRAP_PASS")
-MAILTRAP_HOST = os.getenv("MAILTRAP_HOST", "sandbox.smtp.mailtrap.io")
-MAILTRAP_PORT = 587  
-
-print("Print de MAILTRAP_USER: ", )
-print(MAILTRAP_USER, flush=True)
+GMAIL_USER = os.getenv("GMAIL_USER")  # Tu dirección de Gmail
+GMAIL_PASS = os.getenv("GMAIL_PASS")  # Contraseña de aplicación generada en Google
 
 def send_email_sync(to_email: str, subject: str, body: str):
-    """Función síncrona para enviar el correo"""
-    msg = EmailMessage()
+    """Función síncrona para enviar el correo a cualquier destinatario"""
+    msg = MIMEText(body)
     msg["Subject"] = subject
-    msg["From"] = "hello@demomailtrap.co"
+    msg["From"] = GMAIL_USER
     msg["To"] = to_email
-    msg.set_content(body)
 
     try:
-        with smtplib.SMTP(MAILTRAP_HOST, MAILTRAP_PORT) as server:
-            server.starttls()  # Asegura la conexión
-            server.login(MAILTRAP_USER, MAILTRAP_PASS)
-            server.send_message(msg)
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(GMAIL_USER, GMAIL_PASS)
+            server.sendmail(GMAIL_USER, [to_email], msg.as_string())
+            print(f"✅ Email enviado a {to_email}", flush=True)
     except Exception as e:
-        print(f"Error enviando el email: {e}")
+        print(f"❌ Error enviando el email: {e}", flush=True)
 
 async def send_email(to_email: str, subject: str, body: str):
-    """Función asíncrona que delega la tarea a un hilo separado"""
+    """Función asíncrona que delega el envío a un hilo separado"""
     await asyncio.to_thread(send_email_sync, to_email, subject, body)
 
 async def send_confirmation_email(to_email: str):
-    """Envía un email de confirmación de manera asíncrona sin bloquear la API"""
+    """Envía un email de confirmación"""
     subject = "Registro exitoso"
     body = "Tu registro fue exitoso. Gracias por unirte."
-    print(f"Enviando email a {to_email}", flush=True)
     await send_email(to_email, subject, body)
+
 
 
 
