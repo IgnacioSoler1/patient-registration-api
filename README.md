@@ -6,25 +6,28 @@ Este es un proyecto de API para el registro de pacientes, desarrollado con FastA
 📁 Estructura del Proyecto
 --------------------------
 
-│── app  
-│   ├── api  
-│   │   ├── patients.py         # Endpoints relacionados con los pacientes  
-│   ├── db  
-│   │   ├── database.py         # Configuración de la base de datos  
-│   ├── models  
-│   │   ├── patient.py          # Definición del modelo de paciente  
-│   ├── schemas  
-│   │   ├── patient.py          # Esquemas para validación de datos  
-│   ├── services  
-│   │   ├── email.py            # Función para enviar correos electrónicos  
-│   ├── config.py               # Configuración de variables de entorno  
-│   ├── main.py                 # Punto de entrada de la API  
-│── .env                        # Variables de entorno  
-│── .gitignore                   # Archivos a ignorar en Git  
-│── compose.yaml                 # Configuración para Docker Compose  
-│── Dockerfile                   # Configuración para contenedor Docker  
-│── README.md                    # Documentación del proyecto  
-│── requirements.txt              # Dependencias del proyecto   `
+```
+PATIENT-REGISTRATION-API/
+│── app/
+│   ├── api/
+│   │   ├── patients.py    # Endpoints de la API
+│   ├── db/
+│   │   ├── database.py    # Configuración de la base de datos
+│   ├── models/
+│   │   ├── patient.py     # Definición del modelo de datos
+│   ├── schemas/
+│   │   ├── patient.py     # Esquemas Pydantic para validación de datos
+│   ├── services/
+│   │   ├── email.py       # Servicio de envío de correos electrónicos
+│   ├── config.py          # Configuración del proyecto
+│   ├── main.py            # Punto de entrada de la API
+│── .env                   # Variables de entorno
+│── .gitignore             # Archivos ignorados por Git
+│── compose.yaml           # Configuración para Docker Compose
+│── Dockerfile             # Dockerización del proyecto
+│── README.md              # Documentación del proyecto
+│── requirements.txt       # Dependencias del proyecto
+```
 
 🚀 Instalación y Configuración
 ------------------------------
@@ -47,71 +50,101 @@ Plain `   uvicorn app.main:app --reload   `
 
 La API estará disponible en http://127.0.0.1:8000.
 
-📌 Endpoints
-------------
+## 🛠️ Endpoints Principales
 
-### 1️⃣ Registro de Paciente
+### 📍 Registro de Paciente
 
-**POST** /register
+**POST** `/register`
 
-*   **Descripción:** Registra un nuevo paciente y almacena su información en la base de datos.
-    
-*   **Cuerpo de la solicitud:**
-    
+* *   **Descripción**: Registra un nuevo paciente en la base de datos.
+*     
+* *   **Payload:**
+*     
+*     ```
+*     {
+*       "name": "John Doe",
+*       "email": "john@example.com",
+*       "phone": "+1234567890",
+*       "document_blob": "archivo_binario"
+*     }
+*     ```
+*     
+* *   **Respuesta:**
+*     
+*     ```
+*     {
+*       "id": 1,
+*       "name": "John Doe",
+*       "email": "john@example.com",
+*       "phone": "+1234567890"
+*     }
+*     ```
+*     
 
-Plain 
-    {    "name": "Juan Pérez",
-        "email": "juan@example.com",    
-        "phone": "+598 91234567",    
-        "document_blob": ""  
-    }
+### 📍 Obtener Pacientes
 
-*   **Respuesta exitosa (201):**
-    
+**GET** `/patients`
 
-Plain `   {    "id": 1,    "name": "Juan Pérez",    "email": "juan@example.com",    "phone": "+598 91234567"  }   `
+* *   **Descripción**: Devuelve la lista de pacientes registrados.
+*     
+* *   **Respuesta:**
+*     
+*     ```
+*     [
+*       {
+*         "id": 1,
+*         "name": "John Doe",
+*         "email": "john@example.com"
+*       }
+*     ]
+*     ```
+*     
 
-*   **Errores posibles:**
-    
-    *   400 Email ya registrado.
-        
+### 📍 Obtener un Paciente por ID
 
-### 2️⃣ Obtener Lista de Pacientes
+**GET** `/patients/{id}`
 
-**GET** /patients
+* *   **Descripción**: Retorna los detalles de un paciente específico.
+*     
 
-*   **Descripción:** Retorna todos los pacientes registrados.
-    
-*   **Respuesta exitosa (200):**
-    
+### 📍 Eliminar un Paciente
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   [    {      "id": 1,      "name": "Juan Pérez",      "email": "juan@example.com",      "phone": "+598 91234567"    }  ]   `
+**DELETE** `/patients/{id}`
 
-### 3️⃣ Obtener Paciente por ID
+* *   **Descripción**: Elimina un paciente de la base de datos.
+*     
 
-**GET** /patients/{patient\_id}
+* * *
 
-*   **Descripción:** Retorna los datos de un paciente en base a su ID.
-    
-*   **Respuesta exitosa (200):**
-    
+## 📧 Servicio de Envío de Correos
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   {    "id": 1,    "name": "Juan Pérez",    "email": "juan@example.com",    "phone": "+598 91234567"  }   `
+El servicio `email.py` usa `smtplib` para enviar correos electrónicos de confirmación a los pacientes.
 
-*   **Errores posibles:**
-    
-    *   404 Paciente no encontrado.
-        
+```
+import smtplib
+from email.mime.text import MIMEText
 
-🛠 Tecnologías Utilizadas
--------------------------
+def send_email(subject, body, recipient):
+    msg = MIMEText(body)
+    msg["Subject"] = subject
+    msg["From"] = "noreply@miapp.com"
+    msg["To"] = recipient
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login("tu_email@gmail.com", "tu_password")
+        smtp.sendmail("noreply@miapp.com", recipient, msg.as_string())
+    print("📧 Email enviado con éxito")
+```
 
-*   **FastAPI** → Framework para APIs rápidas y eficientes
-    
-*   **SQLAlchemy** → ORM para manejo de base de datos
-    
-*   **SQLite/PostgreSQL** → Base de datos utilizada
-    
-*   **Docker** → Contenedorización del proyecto
-    
-*   **Postman** → Para probar los endpoints
+* * *
+
+## 🐳 Dockerización
+
+Si deseas correr el proyecto con Docker, usa:
+
+```
+docker-compose up --build
+```
+
+Esto levantará un contenedor con la API y la base de datos PostgreSQL.
+
+* * *
