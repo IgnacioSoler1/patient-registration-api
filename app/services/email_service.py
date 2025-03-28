@@ -30,8 +30,7 @@ def send_email_sync(self, to_email: str, subject: str, body: str):
         raise self.retry(exc=e, countdown=60)  # Reintentar en 60s
 
 # Función que se invoca para delegar el envío del correo a Celery
-def send_confirmation_email(to_email: str):
+def send_confirmation_email(to_email: str, body: str):
     """Envía un email de confirmación usando Celery"""
     subject = "Registro exitoso"
-    body = "Tu registro fue exitoso. Gracias por unirte."
     send_email_sync.apply_async(args=[to_email, subject, body])

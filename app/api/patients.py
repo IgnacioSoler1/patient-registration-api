@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.models.patient import Patient
 from app.schemas.patient import PatientCreate, PatientResponse
-from app.services.email import send_confirmation_email
+from app.services.email_service import send_confirmation_email
+from app.services.base import NotificationManager
 from typing import List
 
 router = APIRouter()
@@ -26,7 +27,12 @@ async def register_patient(patient_data: PatientCreate, db: Session = Depends(ge
     db.refresh(new_patient)
 
     print(f"📧 Enviando email de confirmación a {patient_data.email}", flush=True)
-    send_confirmation_email(patient_data.email)
+    notification_manager = NotificationManager()
+    notification_manager.send_notification(
+        type='email', 
+        recipient=patient_data.email, 
+        message="Tu registro fue exitoso. Gracias por unirte."
+    )
 
     return new_patient
 
