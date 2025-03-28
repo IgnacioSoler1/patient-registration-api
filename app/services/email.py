@@ -12,8 +12,8 @@ GMAIL_USER = os.getenv("GMAIL_USER")  # Tu dirección de Gmail
 GMAIL_PASS = os.getenv("GMAIL_PASS")  # Contraseña de aplicación generada en Google
 
 # Definir la tarea de Celery para enviar el email
-@shared_task
-def send_email_sync(to_email: str, subject: str, body: str):
+@shared_task(bind=True, max_retries=3)
+def send_email_sync(self, to_email: str, subject: str, body: str):
     """Función síncrona para enviar un correo electrónico utilizando SMTP"""
     msg = MIMEText(body)
     msg["Subject"] = subject
@@ -26,7 +26,8 @@ def send_email_sync(to_email: str, subject: str, body: str):
             server.sendmail(GMAIL_USER, [to_email], msg.as_string())
             print(f"✅ Email enviado a {to_email}")
     except Exception as e:
-        print(f"❌ Error enviando el email: {e}")
+        print(f"❌ Error enviando el email a {to_email}: {e}")
+        raise self.retry(exc=e, countdown=60)  # Reintentar en 60s
 
 # Función que se invoca para delegar el envío del correo a Celery
 def send_confirmation_email(to_email: str):

@@ -78,13 +78,13 @@ La API estará disponible en http://0.0.0.0:8000.
 *   **Respuesta:**
      
      ```
-     {
-       "id": 1,
-       "name": "John Doe",
-       "email": "john@example.com",
-       "phone": "+1234567890",
-       "document_url": "URL de la foto"
-     }
+        {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com",
+            "phone": "+1234567890",
+            "document_url": "https://img.freepik.com/free-photo/lifestyle-people-emotions-casual-concept-confident-nice-smiling-asian-woman-cross-arms-chest-confident-ready-help-listening-coworkers-taking-part-conversation_1258-59335.jpg"
+        }
      ```
      
 
@@ -188,12 +188,14 @@ Este proyecto está diseñado para manejar el registro de pacientes a través de
 
 En el archivo `cerely.py`, definimos la configuración de Celery, que incluye la conexión a Redis como broker de tareas.
 
-python
+```
+from celery import Celery
+import os
 
-CopiarEditar
-
-`from celery import Celery import os  # Configuración de Celery con Redis como broker `
-`celery = Celery('tasks', broker=os.getenv('REDIS_URL')) celery.conf.result_backend = os.getenv('REDIS_URL')`
+# Configuración de Celery con Redis como broker
+celery = Celery('tasks', broker=os.getenv('REDIS_URL'))
+celery.conf.result_backend = os.getenv('REDIS_URL')
+```
 
 Para ejecutar Celery con Redis, necesitamos tener ambos servicios (Redis y Celery) corriendo. Esto se logra con los contenedores Docker que hemos configurado.
 
