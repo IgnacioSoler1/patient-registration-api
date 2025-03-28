@@ -43,13 +43,23 @@ services:
       - app_network
     ports:
       - "8089:8089"
-      
+
   redis:
     image: redis:alpine
     container_name: redis
     restart: always
     ports:
       - "6379:6379"
+    networks:
+      - app_network
+  
+  celery_worker:
+    build: .
+    container_name: celery_worker
+    command: ["celery", "-A", "app.celery.celery", "worker", "--loglevel=info"]
+    depends_on:
+      - app
+      - redis
     networks:
       - app_network
 

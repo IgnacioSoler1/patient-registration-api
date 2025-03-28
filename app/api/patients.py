@@ -26,7 +26,7 @@ async def register_patient(patient_data: PatientCreate, db: Session = Depends(ge
     db.refresh(new_patient)
 
     print(f"📧 Enviando email de confirmación a {patient_data.email}", flush=True)
-    asyncio.create_task(send_confirmation_email(patient_data.email))
+    send_confirmation_email(patient_data.email)
 
     return new_patient
 
