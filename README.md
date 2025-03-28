@@ -10,29 +10,31 @@ Este es un proyecto de API para el registro de pacientes, desarrollado con FastA
 PATIENT-REGISTRATION-API/
 │── app/
 │   ├── api/
-│   │   ├── patients.py    # Endpoints de la API
+│   │   ├── patients.py       # Endpoints de la API
 |   ├── cerely/
-|   |   ├── cerely.py      # Configuracion de cerely
+|   |   ├── cerely.py         # Configuracion de cerely
 │   ├── db/
-│   │   ├── database.py    # Configuración de la base de datos
+│   │   ├── database.py       # Configuración de la base de datos
 │   ├── models/
-│   │   ├── patient.py     # Definición del modelo de datos
+│   │   ├── patient.py        # Definición del modelo de datos
 │   ├── schemas/
-│   │   ├── patient.py     # Esquemas Pydantic para validación de datos
+│   │   ├── patient.py        # Esquemas Pydantic para validación de datos
 │   ├── services/
-│   │   ├── email.py       # Servicio de envío de correos electrónicos
-│   ├── config.py          # Configuración del proyecto
-│   ├── main.py            # Punto de entrada de la API
+│   │   ├── base.py           # Creamos familias y metodos abstractos para notificaciones
+│   │   ├── email_service.py  # Servicio de envío de correos electrónicos
+│   │   ├── sms_service.py    # Servicio de envio de mensajes sms
+│   ├── config.py             # Configuración del proyecto
+│   ├── main.py               # Punto de entrada de la API
 │── locust/
-│   ├── Dockerfile         # Docker para inicializar locust
-│   ├── locustfile.py      # Configuracion de locust 
-│   ├── requirements.txt   # Librereias que usa el contenedor de locust
-│── .env                   # Variables de entorno
-│── .gitignore             # Archivos ignorados por Git
-│── compose.yaml           # Configuración para Docker Compose
-│── Dockerfile             # Dockerización del proyecto
-│── README.md              # Documentación del proyecto
-│── requirements.txt       # Dependencias del proyecto
+│   ├── Dockerfile            # Docker para inicializar locust
+│   ├── locustfile.py         # Configuracion de locust 
+│   ├── requirements.txt      # Librereias que usa el contenedor de locust
+│── .env                      # Variables de entorno
+│── .gitignore                # Archivos ignorados por Git
+│── compose.yaml              # Configuración para Docker Compose
+│── Dockerfile                # Dockerización del proyecto
+│── README.md                 # Documentación del proyecto
+│── requirements.txt          # Dependencias del proyecto
 ```
 
 🚀 Instalación y Configuración
@@ -121,24 +123,68 @@ La API estará disponible en http://0.0.0.0:8000.
 
 * * *
 
-## 📧 Servicio de Envío de Correos
+## 📧 Servicio de Notificaciones
 
-El servicio `email.py` usa `smtplib` para enviar correos electrónicos de confirmación a los pacientes.
+### Arquitectura de Notificaciones
+
+El proyecto implementa un sistema de notificaciones flexible y escalable utilizando el patrón de diseño de Servicios Abstractos y Celery para el manejo asíncrono de tareas.
+
+#### Componentes Principales
+
+1.  **Base Abstracta de Notificaciones** (`services/base.py`)* *   Define una interfaz abstracta `NotificationService` que permite crear diferentes tipos de servicios de notificación.
+     * *   Implementa una clase `NotificationManager` que gestiona los diferentes servicios de notificación.
 
 ```
-import smtplib
-from email.mime.text import MIMEText
-
-def send_email(subject, body, recipient):
-    msg = MIMEText(body)
-    msg["Subject"] = subject
-    msg["From"] = "noreply@miapp.com"
-    msg["To"] = recipient
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-        smtp.login("tu_email@gmail.com", "tu_password")
-        smtp.sendmail("noreply@miapp.com", recipient, msg.as_string())
-    print("📧 Email enviado con éxito")
+class NotificationService(ABC):
+    @abstractmethod
+    def send(self, recipient: str, message: str, **kwargs) -> None:
+        """Método abstracto para enviar notificaciones"""
+        pass
 ```
+
+2.  **Servicio de Email** (`services/email_service.py`)* *   Utiliza Celery para el envío asíncrono de correos electrónicos.
+     * *   Implementa una tarea de Celery `send_email_sync` que maneja el envío real del correo.
+     * *   Proporciona una función `send_confirmation_email` para encolar tareas de envío de correo.
+
+'''
+@shared_task(bind=True, max_retries=3)
+def send_email_sync(self, to_email: str, subject: str, body: str):
+    # Lógica de envío de correo electrónico
+    pass
+'''
+
+3.  **Servicio de SMS** (`services/sms_service.py`)* *   Preparado para futuras implementaciones de notificaciones por SMS.
+     * *   Seguirá el mismo patrón de diseño que el servicio de email.
+
+#### Flujo de Notificaciones
+
+1.  Cuando se registra un paciente, se crea una instancia de `NotificationManager`.
+2.  El método `send_notification` selecciona el servicio de notificación apropiado.
+3.  El servicio envía la notificación utilizando Celery, sin bloquear la respuesta de la API.
+
+```
+notification_manager = NotificationManager()
+notification_manager.send_notification(
+    type='email', 
+    recipient=patient_data.email, 
+    message="Tu registro fue exitoso. Gracias por unirte."
+)
+```
+
+### Beneficios de la Arquitectura
+
+*   **Flexibilidad**: Fácil adición de nuevos canales de notificación.
+*   **Desacoplamiento**: Cada servicio de notificación es independiente.
+*   **Escalabilidad**: Preparado para integrar múltiples tipos de notificaciones.
+*   **Asincronía**: Uso de Celery para envío no bloqueante de notificaciones.
+
+### Extensibilidad para SMS
+
+Para añadir notificaciones por SMS en el futuro:
+
+1.  Implementar una tarea de Celery similar a `send_email_sync`.
+2.  Crear un `SMSNotificationService` en `sms_service.py`.
+3.  Añadir el servicio al `NotificationManager`.
 
 * * *
 
