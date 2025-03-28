@@ -6,7 +6,6 @@ Este es un proyecto de API para el registro de pacientes, desarrollado con FastA
 📁 Estructura del Proyecto
 --------------------------
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   PATIENT-REGISTRATION-API  
 │── app  
 │   ├── api  
 │   │   ├── patients.py         # Endpoints relacionados con los pacientes  
@@ -32,11 +31,11 @@ Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQL
 
 ### 1️⃣ Clonar el repositorio
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   git clone https://github.com/tu-usuario/patient-registration-api.git  cd patient-registration-api   `
+Plain `   git clone https://github.com/tu-usuario/patient-registration-api.git  cd patient-registration-api   `
 
 ### 2️⃣ Crear entorno virtual e instalar dependencias
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML``   python3 -m venv env  source env/bin/activate  # En Windows usa `env\Scripts\activate`  pip install -r requirements.txt   ``
+Plain ``   python3 -m venv env  source env/bin/activate  # En Windows usa `env\Scripts\activate`  pip install -r requirements.txt   ``
 
 ### 3️⃣ Configurar variables de entorno
 
@@ -44,7 +43,7 @@ Renombrar el archivo .env.example a .env y completar los valores necesarios.
 
 ### 4️⃣ Ejecutar la API
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   uvicorn app.main:app --reload   `
+Plain `   uvicorn app.main:app --reload   `
 
 La API estará disponible en http://127.0.0.1:8000.
 
@@ -60,12 +59,17 @@ La API estará disponible en http://127.0.0.1:8000.
 *   **Cuerpo de la solicitud:**
     
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   {    "name": "Juan Pérez",    "email": "juan@example.com",    "phone": "+598 91234567",    "document_blob": ""  }   `
+Plain 
+    {    "name": "Juan Pérez",
+        "email": "juan@example.com",    
+        "phone": "+598 91234567",    
+        "document_blob": ""  
+    }
 
 *   **Respuesta exitosa (201):**
     
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   {    "id": 1,    "name": "Juan Pérez",    "email": "juan@example.com",    "phone": "+598 91234567"  }   `
+Plain `   {    "id": 1,    "name": "Juan Pérez",    "email": "juan@example.com",    "phone": "+598 91234567"  }   `
 
 *   **Errores posibles:**
     
