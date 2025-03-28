@@ -11,6 +11,8 @@ PATIENT-REGISTRATION-API/
 │── app/
 │   ├── api/
 │   │   ├── patients.py    # Endpoints de la API
+|   ├── cerely/
+|   |   ├── cerely.py      # Configuracion de cerely
 │   ├── db/
 │   │   ├── database.py    # Configuración de la base de datos
 │   ├── models/
@@ -21,6 +23,10 @@ PATIENT-REGISTRATION-API/
 │   │   ├── email.py       # Servicio de envío de correos electrónicos
 │   ├── config.py          # Configuración del proyecto
 │   ├── main.py            # Punto de entrada de la API
+│── locust/
+│   ├── Dockerfile         # Docker para inicializar locust
+│   ├── locustfile.py      # Configuracion de locust 
+│   ├── requirements.txt   # Librereias que usa el contenedor de locust
 │── .env                   # Variables de entorno
 │── .gitignore             # Archivos ignorados por Git
 │── compose.yaml           # Configuración para Docker Compose
@@ -36,19 +42,19 @@ PATIENT-REGISTRATION-API/
 
 Plain `   git clone https://github.com/tu-usuario/patient-registration-api.git  cd patient-registration-api   `
 
-### 2️⃣ Crear entorno virtual e instalar dependencias
+### 2️⃣ Build de los contenedores
 
-Plain ``   python3 -m venv env  source env/bin/activate  # En Windows usa `env\Scripts\activate`  pip install -r requirements.txt   ``
+Plain ``   docker compose build   ``
 
-### 3️⃣ Configurar variables de entorno
+### 3️⃣ Levantar los contenedores
 
-Renombrar el archivo .env.example a .env y completar los valores necesarios.
+Plain ``   docker compose up  ``
 
 ### 4️⃣ Ejecutar la API
 
-Plain `   uvicorn app.main:app --reload   `
+Plain ``  Peticion post con formato:  ``
 
-La API estará disponible en http://127.0.0.1:8000.
+La API estará disponible en http://0.0.0.0:8000.
 
 ## 🛠️ Endpoints Principales
 
@@ -65,7 +71,7 @@ La API estará disponible en http://127.0.0.1:8000.
        "name": "John Doe",
        "email": "john@example.com",
        "phone": "+1234567890",
-       "document_blob": "archivo_binario"
+       "document_url": "URL a la foto"
      }
      ```
      
@@ -76,14 +82,15 @@ La API estará disponible en http://127.0.0.1:8000.
        "id": 1,
        "name": "John Doe",
        "email": "john@example.com",
-       "phone": "+1234567890"
+       "phone": "+1234567890",
+       "document_url": "URL de la foto"
      }
      ```
      
 
 ### 📍 Obtener Pacientes
 
-**GET** `/patients`
+**GET** `/getPatients`
 
 *   **Descripción**: Devuelve la lista de pacientes registrados.
      
