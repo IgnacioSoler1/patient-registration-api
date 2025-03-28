@@ -6,7 +6,26 @@ Este es un proyecto de API para el registro de pacientes, desarrollado con FastA
 📁 Estructura del Proyecto
 --------------------------
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   PATIENT-REGISTRATION-API  │── app  │   ├── api  │   │   ├── patients.py         # Endpoints relacionados con los pacientes  │   ├── db  │   │   ├── database.py         # Configuración de la base de datos  │   ├── models  │   │   ├── patient.py          # Definición del modelo de paciente  │   ├── schemas  │   │   ├── patient.py          # Esquemas para validación de datos  │   ├── services  │   │   ├── email.py            # Función para enviar correos electrónicos  │   ├── config.py               # Configuración de variables de entorno  │   ├── main.py                 # Punto de entrada de la API  │── .env                        # Variables de entorno  │── .gitignore                   # Archivos a ignorar en Git  │── compose.yaml                 # Configuración para Docker Compose  │── Dockerfile                   # Configuración para contenedor Docker  │── README.md                    # Documentación del proyecto  │── requirements.txt              # Dependencias del proyecto   `
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   PATIENT-REGISTRATION-API  
+│── app  
+│   ├── api  
+│   │   ├── patients.py         # Endpoints relacionados con los pacientes  
+│   ├── db  
+│   │   ├── database.py         # Configuración de la base de datos  
+│   ├── models  
+│   │   ├── patient.py          # Definición del modelo de paciente  
+│   ├── schemas  
+│   │   ├── patient.py          # Esquemas para validación de datos  
+│   ├── services  
+│   │   ├── email.py            # Función para enviar correos electrónicos  
+│   ├── config.py               # Configuración de variables de entorno  
+│   ├── main.py                 # Punto de entrada de la API  
+│── .env                        # Variables de entorno  
+│── .gitignore                   # Archivos a ignorar en Git  
+│── compose.yaml                 # Configuración para Docker Compose  
+│── Dockerfile                   # Configuración para contenedor Docker  
+│── README.md                    # Documentación del proyecto  
+│── requirements.txt              # Dependencias del proyecto   `
 
 🚀 Instalación y Configuración
 ------------------------------
