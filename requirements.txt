@@ -11,3 +11,7 @@ python-dotenv
 pillow
 aiofiles
 asyncio
+locust
+faker
+celery
+redis

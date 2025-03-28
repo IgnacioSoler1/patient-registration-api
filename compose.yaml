@@ -34,6 +34,26 @@ services:
     networks:
       - app_network
 
+  load_test:
+    build: ./locust
+    container_name: load_tester
+    depends_on:
+      - app
+    networks:
+      - app_network
+    ports:
+      - "8089:8089"
+      
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+
+
 networks:
   app_network:
     driver: bridge

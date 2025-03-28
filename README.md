@@ -56,63 +56,61 @@ La API estará disponible en http://127.0.0.1:8000.
 
 **POST** `/register`
 
-* *   **Descripción**: Registra un nuevo paciente en la base de datos.
-*     
-* *   **Payload:**
-*     
-*     ```
-*     {
-*       "name": "John Doe",
-*       "email": "john@example.com",
-*       "phone": "+1234567890",
-*       "document_blob": "archivo_binario"
-*     }
-*     ```
-*     
-* *   **Respuesta:**
-*     
-*     ```
-*     {
-*       "id": 1,
-*       "name": "John Doe",
-*       "email": "john@example.com",
-*       "phone": "+1234567890"
-*     }
-*     ```
-*     
+*   **Descripción**: Registra un nuevo paciente en la base de datos.
+     
+*   **Payload:**
+     
+     ```
+     {
+       "name": "John Doe",
+       "email": "john@example.com",
+       "phone": "+1234567890",
+       "document_blob": "archivo_binario"
+     }
+     ```
+     
+*   **Respuesta:**
+     
+     ```
+     {
+       "id": 1,
+       "name": "John Doe",
+       "email": "john@example.com",
+       "phone": "+1234567890"
+     }
+     ```
+     
 
 ### 📍 Obtener Pacientes
 
 **GET** `/patients`
 
-* *   **Descripción**: Devuelve la lista de pacientes registrados.
-*     
-* *   **Respuesta:**
-*     
-*     ```
-*     [
-*       {
-*         "id": 1,
-*         "name": "John Doe",
-*         "email": "john@example.com"
-*       }
-*     ]
-*     ```
-*     
+*   **Descripción**: Devuelve la lista de pacientes registrados.
+     
+*   **Respuesta:**
+     ```
+     [
+       {
+         "id": 1,
+         "name": "John Doe",
+         "email": "john@example.com"
+       }
+     ]
+     ```     
 
 ### 📍 Obtener un Paciente por ID
 
 **GET** `/patients/{id}`
 
-* *   **Descripción**: Retorna los detalles de un paciente específico.
-*     
+*   **Descripción**: Retorna los detalles de un paciente específico.
+     
 
 ### 📍 Eliminar un Paciente
 
 **DELETE** `/patients/{id}`
 
-* *   **Descripción**: Elimina un paciente de la base de datos.
-*     
+*   **Descripción**: Elimina un paciente de la base de datos.
+     
 
 * * *
 
