@@ -30,7 +30,7 @@ async def register_patient(patient_data: PatientCreate, db: Session = Depends(ge
 
     return new_patient
 
-@router.get("/list", response_model=List[PatientResponse])
+@router.get("/getPatients", response_model=List[PatientResponse])
 def get_patients(db: Session = Depends(get_db)):
     """Obtiene la lista de todos los pacientes registrados en la base de datos."""
     patients = db.query(Patient).all()
