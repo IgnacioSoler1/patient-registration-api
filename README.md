@@ -42,19 +42,19 @@ PATIENT-REGISTRATION-API/
 
 ### 1️⃣ Clonar el repositorio
 
-`   git clone https://github.com/tu-usuario/patient-registration-api.git  cd patient-registration-api   `
+` git clone https://github.com/tu-usuario/patient-registration-api.git  cd patient-registration-api `
 
 ### 2️⃣ Build de los contenedores
 
-``   docker compose build   ``
+``docker compose build``
 
 ### 3️⃣ Levantar los contenedores
 
-``   docker compose up  ``
+``docker compose up``
 
 ### 4️⃣ Ejecutar la API
 
-``  Peticion post con formato:  ``
+``Peticion post con formato:``
 
 La API estará disponible en http://0.0.0.0:8000.
 
@@ -73,7 +73,7 @@ La API estará disponible en http://0.0.0.0:8000.
        "name": "John Doe",
        "email": "john@example.com",
        "phone": "+1234567890",
-       "document_url": "URL a la foto"
+       "document_url": "https://img.freepik.com/free-photo/lifestyle-people-emotions-casual-concept-confident-nice-smiling-asian-woman-cross-arms-chest-confident-ready-help-listening-coworkers-taking-part-conversation_1258-59335.jpg"
      }
      ```
      
@@ -132,7 +132,7 @@ El proyecto implementa un sistema de notificaciones flexible y escalable utiliza
 #### Componentes Principales
 
 1.  **Base Abstracta de Notificaciones** (`services/base.py`)* *   Define una interfaz abstracta `NotificationService` que permite crear diferentes tipos de servicios de notificación.
-     * *   Implementa una clase `NotificationManager` que gestiona los diferentes servicios de notificación.
+    *   Implementa una clase `NotificationManager` que gestiona los diferentes servicios de notificación.
 
 ```
 class NotificationService(ABC):
@@ -143,8 +143,8 @@ class NotificationService(ABC):
 ```
 
 2.  **Servicio de Email** (`services/email_service.py`)* *   Utiliza Celery para el envío asíncrono de correos electrónicos.
-     * *   Implementa una tarea de Celery `send_email_sync` que maneja el envío real del correo.
-     * *   Proporciona una función `send_confirmation_email` para encolar tareas de envío de correo.
+    *   Implementa una tarea de Celery `send_email_sync` que maneja el envío real del correo.
+    *   Proporciona una función `send_confirmation_email` para encolar tareas de envío de correo.
 
 '''
 @shared_task(bind=True, max_retries=3)
@@ -154,7 +154,7 @@ def send_email_sync(self, to_email: str, subject: str, body: str):
 '''
 
 3.  **Servicio de SMS** (`services/sms_service.py`)* *   Preparado para futuras implementaciones de notificaciones por SMS.
-     * *   Seguirá el mismo patrón de diseño que el servicio de email.
+    *   Seguirá el mismo patrón de diseño que el servicio de email.
 
 #### Flujo de Notificaciones
 
@@ -317,4 +317,61 @@ El proyecto está completamente dockerizado para facilitar su implementación en
 *   **Contenedor de Locust**: Ejecuta las pruebas de carga.
 
 *   **Contenedor de Base de datos MySQL**: Instancia de base de datos donde se guardan los datos de los pacientes
-*
+
+* * *
+
+# 🚀 Arquitectura en Producción
+
+Esta sección describe la arquitectura de la aplicación en producción utilizando exclusivamente servicios de AWS. La infraestructura está diseñada para ser altamente escalable, segura y sin necesidad de administrar servidores manualmente.
+
+* * *
+
+## 📌 Diagrama de Arquitectura
+
+
+![Arquitectura de la Aplicación](docs/Patient Registration API.jpg)
+
+* * *
+
+## 🏗️ **Explicación de la Arquitectura**
+
+### **1️⃣ Frontend: Hosting y Distribución**
+
+* *   **Route 53 (DNS Service):** Gestiona el dominio y redirige las solicitudes al sitio web.
+*     
+* *   **CloudFront (CDN):** Acelera la entrega del sitio web estático almacenado en **S3**.
+*     
+* *   **Amazon S3 (Static Website Hosting):** Almacena los archivos estáticos de la web.
+*     
+
+✅ **Razón:** CloudFront mejora la velocidad y seguridad, y S3 reduce costos al no requerir servidores dedicados.
+
+* * *
+
+### **2️⃣ Backend: Procesamiento de Datos**
+
+* *   **Application Load Balancer (ALB):** Distribuye el tráfico entre múltiples instancias de backend.
+*     
+* *   **AWS Fargate (Serverless Containers - ECS):** Maneja la lógica del negocio sin necesidad de administrar servidores.
+*     
+* *   **Amazon RDS (Relational Database Service):** Almacena datos estructurados de usuarios y transacciones.
+*     
+
+✅ **Razón:** Fargate escala automáticamente sin gestionar servidores, y RDS garantiza integridad y eficiencia en consultas SQL.
+
+* * *
+
+### **3️⃣ Procesamiento Asíncrono: Envío de Correos y SMS**
+
+*   **Amazon SQS (Simple Queue Service):** Recibe solicitudes de Fargate para procesar emails/SMS sin bloquear la aplicación.
+
+*   **Amazon EventBridge:** Su función es detectar eventos y activar acciones automáticamente. Lambda puede leer directamente desde SQS, pero EventBridge permite más flexibilidad en la gestión de eventos, como agregar reglas para priorizar ciertos tipos de mensajes, activar múltiples Lambdas, etc.
+
+*   **AWS Lambda:** Procesa los mensajes de SQS y decide si enviar email o SMS.
+     
+*   **Amazon SES (Simple Email Service):** Envía emails transaccionales.
+     
+*   **Amazon SNS (Simple Notification Service):** Envía SMS a los usuarios.
+     
+
+✅ **Razón:** SQS desacopla la lógica, Lambda permite ejecución sin servidores, SES es la opción más económica para emails y SNS para SMS.
