@@ -324,12 +324,10 @@ El proyecto está completamente dockerizado para facilitar su implementación en
 
 Esta sección describe la arquitectura de la aplicación en producción utilizando exclusivamente servicios de AWS. La infraestructura está diseñada para ser altamente escalable, segura y sin necesidad de administrar servidores manualmente.
 
-* * *
-
 ## 📌 Diagrama de Arquitectura
 
 
-![Arquitectura de la Aplicación](docs/Patient Registration API.jpg)
+![Arquitectura de la Aplicación](docs/PatientRegistrationAPI.jpg)
 
 * * *
 
