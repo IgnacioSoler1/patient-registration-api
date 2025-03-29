@@ -82,7 +82,7 @@ La API estará disponible en http://0.0.0.0:8000.
      ```
         {
             "id": 1,
-            "name": "John Doe",
+            "name": "Jon Doeh",
             "email": "john@example.com",
             "phone": "+1234567890",
             "document_url": "https://img.freepik.com/free-photo/lifestyle-people-emotions-casual-concept-confident-nice-smiling-asian-woman-cross-arms-chest-confident-ready-help-listening-coworkers-taking-part-conversation_1258-59335.jpg"
@@ -109,17 +109,33 @@ La API estará disponible en http://0.0.0.0:8000.
 
 ### 📍 Obtener un Paciente por ID
 
-**GET** `/patients/{id}`
+**GET** `/patients/getPatientById/{id}`
 
 *   **Descripción**: Retorna los detalles de un paciente específico.
      
+*   **Respuesta:**
+     ```
+        {
+            "id": 3,
+            "name": "Jon Doeh",
+            "email": "john@example.com",
+            "phone": "+59896689795",
+            "document_url": "https://img.freepik.com/free-photo/lifestyle-people-emotions-casual-concept-confident-nice-smiling-asian-woman-cross-arms-chest-confident-ready-help-listening-coworkers-taking-part-conversation_1258-59335.jpg"
+        }
+     ```  
 
 ### 📍 Eliminar un Paciente
 
-**DELETE** `/patients/{id}`
+**DELETE** `/patients/deletePatientById/{id}`
 
 *   **Descripción**: Elimina un paciente de la base de datos.
-     
+    
+*   **Respuesta:**
+```
+    {
+    "message": "Paciente con ID 3 eliminado correctamente"
+    }
+ ```  
 
 * * *
 
@@ -335,12 +351,12 @@ Esta sección describe la arquitectura de la aplicación en producción utilizan
 
 ### **1️⃣ Frontend: Hosting y Distribución**
 
-* *   **Route 53 (DNS Service):** Gestiona el dominio y redirige las solicitudes al sitio web.
-*     
-* *   **CloudFront (CDN):** Acelera la entrega del sitio web estático almacenado en **S3**.
-*     
-* *   **Amazon S3 (Static Website Hosting):** Almacena los archivos estáticos de la web.
-*     
+*   **Route 53 (DNS Service):** Gestiona el dominio y redirige las solicitudes al sitio web.
+     
+*   **CloudFront (CDN):** Acelera la entrega del sitio web estático almacenado en **S3**.
+     
+*   **Amazon S3 (Static Website Hosting):** Almacena los archivos estáticos de la web.
+     
 
 ✅ **Razón:** CloudFront mejora la velocidad y seguridad, y S3 reduce costos al no requerir servidores dedicados.
 
@@ -348,12 +364,12 @@ Esta sección describe la arquitectura de la aplicación en producción utilizan
 
 ### **2️⃣ Backend: Procesamiento de Datos**
 
-* *   **Application Load Balancer (ALB):** Distribuye el tráfico entre múltiples instancias de backend.
-*     
-* *   **AWS Fargate (Serverless Containers - ECS):** Maneja la lógica del negocio sin necesidad de administrar servidores.
-*     
-* *   **Amazon RDS (Relational Database Service):** Almacena datos estructurados de usuarios y transacciones.
-*     
+*   **Application Load Balancer (ALB):** Distribuye el tráfico entre múltiples instancias de backend.
+     
+*   **AWS Fargate (Serverless Containers - ECS):** Maneja la lógica del negocio sin necesidad de administrar servidores.
+     
+*   **Amazon RDS (Relational Database Service):** Almacena datos estructurados de usuarios y transacciones.
+     
 
 ✅ **Razón:** Fargate escala automáticamente sin gestionar servidores, y RDS garantiza integridad y eficiencia en consultas SQL.
 

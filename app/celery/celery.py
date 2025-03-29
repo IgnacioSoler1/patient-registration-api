@@ -13,5 +13,4 @@ celery_app = Celery(
 )
 
 # Cargar configuración adicional
-celery_app.config_from_object("app.config")  # Puedes añadir más configuraciones aquí si lo necesitas
 celery_app.autodiscover_tasks(["app.services.email_service"])  # Descubre las tareas en el archivo de email

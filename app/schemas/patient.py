@@ -1,10 +1,11 @@
 from pydantic import BaseModel, EmailStr, HttpUrl
 
+#Definimos las respuestas que esperamos en las API's
 class PatientCreate(BaseModel):
     name: str
     email: EmailStr
     phone: str
-    document_url: HttpUrl  # Cambiamos UploadFile por HttpUrl
+    document_url: HttpUrl  
 
 class PatientResponse(BaseModel):
     id: int

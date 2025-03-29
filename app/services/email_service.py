@@ -8,8 +8,8 @@ from celery import shared_task
 # Cargar variables de entorno
 load_dotenv()
 
-GMAIL_USER = os.getenv("GMAIL_USER")  # Tu dirección de Gmail
-GMAIL_PASS = os.getenv("GMAIL_PASS")  # Contraseña de aplicación generada en Google
+GMAIL_USER = os.getenv("GMAIL_USER")
+GMAIL_PASS = os.getenv("GMAIL_PASS")
 
 # Definir la tarea de Celery para enviar el email
 @shared_task(bind=True, max_retries=3)

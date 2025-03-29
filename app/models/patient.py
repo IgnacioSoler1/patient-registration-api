@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from app.db.database import Base
 
+#Definimos entidad de paciente para la base de datos.
 class Patient(Base):
     __tablename__ = "patients"
 
